@@ -1,0 +1,138 @@
+/* Prevent body overflow issues */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  /* Full-width background for top part */
+  .footer-top-bg {
+    background-color: #222;
+    width: 100vw;
+    padding: 60px 0 30px;
+    overflow-x: hidden;
+  }
+  
+  /* Full-width background for social links */
+  .social-links-warp-bg {
+    background-color: #111;
+    width: 100vw;
+    padding: 20px 0;
+    overflow-x: hidden;
+  }
+  
+  /* Centering footer content */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  .footer-logo img {
+    height: 40px;
+    margin-bottom: 30px;
+  }
+  
+  .footer-widget h2 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .footer-widget p,
+  .footer-widget ul,
+  .footer-widget .con-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #ccc;
+  }
+  
+  .footer-widget ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-widget ul li a {
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  /* Blog layout fixes */
+  .fw-latest-post-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lp-item {
+    display: flex;
+    gap: 10px;
+  }
+  .lp-thumb img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+  .lp-content h6 {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+  }
+  .lp-content span {
+    font-size: 12px;
+    color: #aaa;
+  }
+  .lp-content .readmore {
+    font-size: 12px;
+    color: #ff4081;
+    text-decoration: none;
+  }
+  
+  .con-info span {
+    display: inline-block;
+    width: 20px;
+    color: #ff4081;
+  }
+  
+  /* Social links */
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .social-links a {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    background-color: #333;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .social-links a:hover {
+    background-color: #555;
+  }
+  
+  .footer-copy {
+    margin: 20px 0 0;
+    color: #6c757d;
+  }
+
+  .footer-section {
+  background: #222;
+  padding: 50px 0;
+  margin-top: auto;
+}
+
+.social-links-warp-bg {
+  background: #111;
+  padding: 20px 0;
+  margin-top: 50px;
+}
