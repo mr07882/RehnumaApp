@@ -1,12 +1,16 @@
-# React + Vite
+# رَہنُما
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Our platform will revolutionize the grocery shopping experience by leveraging technology tohelp consumers save money through intelligent shopping routes across multiple supermarkets. The application will provide an interface where users can input their grocery lists and receive optimized shopping plans that consider both product prices across different stores and transportation costs by finding the best combination of supermarkets nearby to purchase these items at the lowest total cost. The app will act as a guide for users by generating an optimized itinerary, helping them shop efficiently while minimizing costs. Hence, the name "Rehnuma" signifies its role in providing smart and strategic shopping directions.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## GUIDE TO FOLDER STRUCTURE:
 
-## Expanding the ESLint configuration
+The 'Documentation' folder contains all the software engineering documents that were created during the project, including the project proposal, system design, architecture design, etc.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Read 'INSTRUCTIONS.txt' to learn how to run this web app on your local machine.
+
+"Trello Link.txt" contains the link to the Trello workspace, which was used to track the project's progress.
+
+All other files are part of the web app's source code.
+
+
