@@ -1,7 +1,6 @@
-import React from 'react';
-import '../styles/Page2.css';
-{/*import Header from '../components/Header';*/}
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/Page2.css'; // Reusing the same stylesheet
 
 
 
@@ -12,5 +11,6 @@ const Page2 = () => {
     </div>
   );
 };
+
 
 export default Page2;
