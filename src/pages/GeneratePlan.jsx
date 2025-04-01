@@ -1,15 +1,15 @@
 import React from 'react';
-import '../styles/Page5.css';
+import '../styles/GeneratePlan.css';
 {/*import Header from '../components/Header';*/}
 import { Link } from 'react-router-dom';
 
 
-const Page5 = () => {
+const GeneratePlan = () => {
   return (
     <div>
-      <h1>THIS IS PAGE5</h1>
+      <h1>THIS IS GeneratePlan PAGE</h1>
     </div>
   );
 };
 
-export default Page5;
+export default GeneratePlan;

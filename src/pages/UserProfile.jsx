@@ -1,16 +1,16 @@
 import React from 'react';
-import '../styles/Page3.css';
+import '../styles/UserProfile.css';
 {/*import Header from '../components/Header';*/}
 import { Link } from 'react-router-dom';
 
 
 
-const Page3 = () => {
+const UserProfile = () => {
   return (
     <div>
-      <h1>THIS IS PAGE3</h1>
+      <h1>THIS IS USER PROFILE PAGE</h1>
     </div>
   );
 };
 
-export default Page3;
+export default UserProfile;

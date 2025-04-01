@@ -1,16 +1,16 @@
 import React from 'react';
-import '../styles/Page4.css';
+import '../styles/SignUp.css';
 {/*import Header from '../components/Header';*/}
 import { Link } from 'react-router-dom';
 
 
 
-const Page4 = () => {
+const SignUp = () => {
   return (
     <div>
-      <h1>THIS IS PAGE4</h1>
+      <h1>THIS IS SIGN UP PAGE</h1>
     </div>
   );
 };
 
-export default Page4;
+export default SignUp;

@@ -1,0 +1,256 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+
+body {
+  background: url('/Im2_History.png') no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+}
+
+.history-container {
+  background: none; /* Remove background from container */
+  min-height: 100vh;
+  padding: 2rem;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-background-image {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 20vw;
+  max-width: 250px;
+  height: auto;
+  opacity: 0.7;
+  z-index: 0;
+  pointer-events: none;
+  transition: width 0.3s ease;
+}
+
+.history-heading {
+  color: #4a2b7a;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.search-bar {
+  display: block;
+  margin: 0 auto 2rem auto;
+  padding: 0.8rem 1rem;
+  width: 80%;
+  max-width: 500px;
+  font-size: 1rem;
+  border: 2px solid #6c4a9e;
+  border-radius: 10px;
+  outline: none;
+  background-color: #ECEEEB; /* Updated background color */
+  color: black; /* Updated text color */
+  transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #4a2b7a;
+}
+
+.plans-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(74, 43, 122, 0.15);
+}
+
+.generate-plan-button {
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  background-color: #4df2fa;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 10%;
+  height: 20%;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 120%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: color 0.3s ease, transform 0.3s ease;
+  z-index: 3;
+}
+
+.generate-plan-button:hover {
+  color: #4a2b7a;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Rest of the existing CSS remains unchanged below this line */
+
+.plan-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(74, 43, 122, 0.1);
+  transition: all 0.3s ease;
+}
+
+.plan-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(74, 43, 122, 0.15);
+}
+
+.plan-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: #6c4a9e;
+  border-radius: 15px;
+}
+
+.plan-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.toggle-icon {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.plan-item.expanded .toggle-icon {
+  transform: rotate(45deg);
+}
+
+.plan-details {
+  padding: 1.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.store-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(248, 244, 255, 0.8);
+  border-radius: 10px;
+}
+
+.store-name {
+  color: #4a2b7a;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  padding: 0.5rem 1rem;
+  margin: 0.3rem 0;
+  background: white;
+  border-radius: 5px;
+  color: #4a2b7a;
+  display: flex;
+  align-items: center;
+}
+
+.item::before {
+  content: "•";
+  color: #6c4a9e;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .history-background-image {
+    width: 25vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .history-container {
+    padding: 1rem;
+  }
+
+  .plans-list {
+    padding: 1.5rem;
+  }
+
+  .history-background-image {
+    width: 30vw;
+    opacity: 0.6;
+  }
+
+  .history-heading {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+
+  .plan-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .store-name {
+    font-size: 1rem;
+  }
+
+  .item {
+    font-size: 0.9rem;
+  }
+
+  .generate-plan-button {
+    position: static;
+    margin: 1rem auto 0;
+    transform: none;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    line-height: normal;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .history-heading {
+    font-size: 1.8rem;
+  }
+
+  .plan-header {
+    padding: 1rem;
+  }
+
+  .history-background-image {
+    width: 40vw;
+    max-width: 150px;
+    opacity: 0.5;
+  }
+}

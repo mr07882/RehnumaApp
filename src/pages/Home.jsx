@@ -7,10 +7,10 @@ const Home = () => {
     <div className="home-container">
       <h1 className="app-logo">رَہنُما</h1>
           <div className="cta-buttons">
-            <Link to="/Page2" className="cta-button login-btn">
+            <Link to="/Login" className="cta-button login-btn">
               Login
             </Link>
-            <Link to="/Page3" className="cta-button signup-btn">
+            <Link to="/SignUp" className="cta-button signup-btn">
               Sign Up
             </Link>
           </div>

@@ -1,19 +1,23 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Page2 from './pages/Page2';
+import Login from './pages/Login';
 import Home from './pages/Home';
-import Page3 from './pages/Page3';
-import Page4 from './pages/Page4';
-import Page5 from './pages/Page5';
+import SignUp from './pages/SignUp';
+import History from './pages/History';
+import GeneratePlan from './pages/GeneratePlan';
+import UserProfile from './pages/UserProfile';
+import Output from './pages/Output';
 
 const AppRouter = () => (
     <BrowserRouter>
       
       <Routes>
         <Route path="/" element={<Home />} />          {/* Home Page */}
-        <Route path="/Page2" element={<Page2 />} />         {/* Cart Page */}
-        <Route path="/Page3" element={<Page3 />} />   {/* Contact Page */}
-        <Route path="/Page4" element={<Page4 />} /> {/* Checkout Page */}
-        <Route path="/Page5" element={<Page5 />} />  {/* Category Page */}
+        <Route path="/Login" element={<Login />} />         {/* Cart Page */}
+        <Route path="/SignUp" element={<SignUp />} />   {/* Contact Page */}
+        <Route path="/History" element={<History />} /> {/* Checkout Page */}
+        <Route path="/GeneratePlan" element={<GeneratePlan />} />  {/* Category Page */}
+        <Route path="/UserProfile" element={<UserProfile />} />
+        <Route path="/Output" element={<Output />} />
       </Routes>
     </BrowserRouter>
   );
