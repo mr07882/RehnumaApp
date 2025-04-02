@@ -34,7 +34,7 @@ const SignUp = () => {
 
     setError('');
     console.log('Sign-up successful:', formData);
-    navigate('/GeneratePlan');
+    navigate('/UserProfile'); // Redirect to UserProfile page
   };
 
   const handleRedirectToLogin = () => {
