@@ -11,6 +11,7 @@ const History = () => {
     {
       id: 1,
       name: "Weekly Grocery Plan",
+      totalCost: 5000, // Added total cost
       details: [
         {
           store: "Naheed Supermarket",
@@ -29,6 +30,7 @@ const History = () => {
     {
       id: 2,
       name: "Emergency Purchase",
+      totalCost: 2000, // Added total cost
       details: [
         {
           store: "Hyperstar",
@@ -39,6 +41,7 @@ const History = () => {
     {
       id: 3,
       name: "Purchase 1",
+      totalCost: 1500, // Added total cost
       details: [
         {
           store: "Hyperstar",
@@ -49,6 +52,7 @@ const History = () => {
     {
       id: 4,
       name: "Purchase 2",
+      totalCost: 2500, // Added total cost
       details: [
         {
           store: "Hyperstar",
@@ -59,6 +63,7 @@ const History = () => {
     {
       id: 5,
       name: "Purchase 3",
+      totalCost: 3000, // Added total cost
       details: [
         {
           store: "Hyperstar",
@@ -69,6 +74,7 @@ const History = () => {
     {
       id: 6,
       name: "Purchase 4",
+      totalCost: 4000, // Added total cost
       details: [
         {
           store: "Hyperstar",
@@ -79,6 +85,7 @@ const History = () => {
     {
       id: 7,
       name: "Purchase 6",
+      totalCost: 6000, // Added total cost
       details: [
         {
           store: "Hyperstar",
@@ -156,6 +163,7 @@ const History = () => {
             
             {expandedPlan === plan.id && (
               <div className="plan-details">
+                <p><strong>Total Cost:</strong> Rs. {plan.totalCost}</p> {/* Display total cost */}
                 {plan.details.map((store, index) => (
                   <div key={index} className="store-section">
                     <h4 className="store-name">
