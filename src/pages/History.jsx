@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../styles/History.css';
+import Header from '../components/Header';
 
 const History = () => {
   const [expandedPlan, setExpandedPlan] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const navigate = useNavigate(); // Initialize navigate function
-  
-  // Sample data - replace with actual data from your backend
-  const shoppingPlans = [
+  const [selectedPlans, setSelectedPlans] = useState([]); // State for selected plans
+  const [shoppingPlans, setShoppingPlans] = useState([ // Convert to state
     {
       id: 1,
       name: "Weekly Grocery Plan",
@@ -87,15 +86,34 @@ const History = () => {
         }
       ]
     }
-  ];
+  ]); // End of shoppingPlans state
+  const navigate = useNavigate(); // Initialize navigate function
 
   // Filter plans based on search query
   const filteredPlans = shoppingPlans.filter(plan =>
     plan.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Function to toggle plan selection
+  const togglePlanSelection = (planId) => {
+    setSelectedPlans((prevSelected) =>
+      prevSelected.includes(planId)
+        ? prevSelected.filter((id) => id !== planId)
+        : [...prevSelected, planId]
+    );
+  };
+
+  // Function to delete selected plans
+  const deleteSelectedPlans = () => {
+    setShoppingPlans((prevPlans) =>
+      prevPlans.filter((plan) => !selectedPlans.includes(plan.id))
+    );
+    setSelectedPlans([]); // Clear selection
+  };
+
   return (
     <div className="history-container">
+      <Header />
       <h1 className="history-heading">YOUR PAST SHOPPING PLANS</h1>
       <input 
         type="text" 
@@ -106,9 +124,9 @@ const History = () => {
       />
       <button 
         className="generate-plan-button" 
-        onClick={() => navigate('/GeneratePlan')}
+        onClick={deleteSelectedPlans} // Update button to delete selected plans
       >
-        GENERATE NEW PLAN
+        DELETE SELECTED PLANS
       </button>
       <img 
       src="/Im1_History.png" 
@@ -125,6 +143,11 @@ const History = () => {
               className="plan-header"
               onClick={() => setExpandedPlan(expandedPlan === plan.id ? null : plan.id)}
             >
+              <input 
+                type="checkbox" 
+                checked={selectedPlans.includes(plan.id)} 
+                onChange={() => togglePlanSelection(plan.id)} 
+              />
               <h3>{plan.name}</h3>
               <span className="toggle-icon">
                 {expandedPlan === plan.id ? '−' : '+'}

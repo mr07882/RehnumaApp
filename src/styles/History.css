@@ -22,15 +22,21 @@ body {
   background: none; /* Remove background from container */
   min-height: 100vh;
   padding: 2rem;
+  padding-top: 100px;
   width: 100%;
   position: relative;
   overflow: hidden;
 }
 
+.history-content {
+  position: relative;
+  z-index: 1;
+}
+
 .history-background-image {
   position: fixed;
   bottom: 0;
-  right: 0;
+  right: 1rem; /* Shifted slightly to the left */
   width: 20vw;
   max-width: 250px;
   height: auto;
@@ -199,7 +205,7 @@ body {
 
 @media (max-width: 768px) {
   .history-container {
-    padding: 1rem;
+    padding: 6rem;
   }
 
   .plans-list {
@@ -242,6 +248,10 @@ body {
 }
 
 @media (max-width: 480px) {
+
+  .history-container {
+    padding-top: 120px; /* Adjust for stacked header items */
+  }
   .history-heading {
     font-size: 1.8rem;
   }
