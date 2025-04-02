@@ -1,71 +1,152 @@
-
 .signup-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  /* Add transition effect for swipe animation */
+  transition: transform 0.5s ease-in-out;
+}
+
+.signup-container.swipe-left {
+  transform: translateX(-100%); /* Swipe the page to the left */
+}
+
+.signup-left {
+  flex: 0 0 70%;
   background: white;
+  padding: 4rem 8%;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-right {
+  flex: 0 0 30%;
+  background: #4a2b7a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-decoration: none;
+  position: relative; /* Added for positioning the arrow */
+}
+
+.signup-right:hover {
+  background: #3a2162;
+}
+
+.signup-arrow {
+  position: absolute;
+  right: 1rem; /* Position the arrow inside the purple section */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem; /* Adjust size of the arrow */
+  color: white; /* White color for the arrow */
+  font-weight: bold;
+}
+
+.right-content {
+  color: white;
   text-align: center;
 }
 
-.signup-heading {
+.right-content h2 {
   font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.right-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.signup-heading {
   color: #4a2b7a;
-  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.signup-form {
+  max-width: 500px;
+  width: 100%;
 }
 
 .signup-input {
   width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
-  border: 2px solid #6c4a9e;
-  border-radius: 10px;
-  outline: none;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
 }
 
 .signup-input:focus {
-  border-color: #4a2b7a;
+  border-color: #6c4a9e;
+  outline: none;
 }
 
 .signup-checkbox {
-  margin: 1rem 0;
   display: flex;
   align-items: center;
-  font-size: 0.9rem;
+  margin: 1.5rem 0;
   color: #4a2b7a;
 }
 
 .signup-checkbox input {
-  margin-right: 0.5rem;
+  margin-right: 0.8rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .signup-button {
-  background-color: #4a2b7a;
+  width: 100%;
+  padding: 1rem;
+  background: #6c4a9e;
   color: white;
   border: none;
-  border-radius: 10px;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease;
 }
 
 .signup-button:hover {
-  background-color: #6c4a9e;
-  transform: scale(1.05);
+  background: #4a2b7a;
 }
 
-.signup-link {
-  display: block;
-  margin-top: 1rem;
-  color: #4a2b7a;
-  text-decoration: none;
+.error-message {
+  color: #ff4444;
+  margin-bottom: 1rem;
   font-size: 0.9rem;
 }
 
-.signup-link:hover {
-  text-decoration: underline;
+@media (max-width: 768px) {
+  .signup-container {
+    flex-direction: column-reverse; /* Change order to make purple part appear below */
+  }
+
+  .signup-left {
+    flex: 1;
+    padding: 4rem 2rem;
+  }
+
+  .signup-right {
+    flex: 1;
+    padding: 3rem 2rem;
+  }
+
+  .signup-heading {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-heading {
+    font-size: 1.8rem;
+  }
+
+  .right-content h2 {
+    font-size: 1.5rem;
+  }
 }
