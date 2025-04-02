@@ -173,6 +173,7 @@ body {
   color: #4a2b7a;
   margin: 0 0 1rem 0;
   font-size: 1.2rem;
+  
 }
 
 .item-list {
@@ -189,10 +190,11 @@ body {
   color: #4a2b7a;
   display: flex;
   align-items: center;
+  text-align: left; /* Ensure left alignment */
 }
 
 .item::before {
-  content: "•";
+  
   color: #6c4a9e;
   margin-right: 0.5rem;
 }
