@@ -190,7 +190,6 @@ body {
   color: #4a2b7a;
   display: flex;
   align-items: center;
-  text-align: left; /* Ensure left alignment */
 }
 
 .item::before {
@@ -267,4 +266,6 @@ body {
     max-width: 150px;
     opacity: 0.5;
   }
+
+  
 }

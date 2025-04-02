@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaUser, FaPlusCircle, FaHistory } from 'react-icons/fa';
 import '../styles/Header.css';
 
 const Header = () => {
   const location = useLocation();
+  const [isScrollable, setIsScrollable] = useState(false);
+
+  useEffect(() => {
+    const checkScrollability = () => {
+      setIsScrollable(document.documentElement.scrollHeight > window.innerHeight);
+    };
+
+    checkScrollability();
+    window.addEventListener('resize', checkScrollability);
+
+    return () => {
+      window.removeEventListener('resize', checkScrollability);
+    };
+  }, []);
 
   return (
-    <header className="main-header">
+    <header className={`main-header ${!isScrollable ? 'no-scroll' : ''}`}>
       <nav className="nav-container">
         <Link 
           to="/UserProfile" 

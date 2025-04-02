@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    right: 1rem;
+    right: 0rem;    /* WIDTH OF THE HEADER IS HANDLED BY THIS */
     background-color: #4b05f03f;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(74, 43, 122, 0.1);

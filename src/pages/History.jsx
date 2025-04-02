@@ -110,7 +110,7 @@ const History = () => {
     );
   };
 
-  // Function to delete selected plans with confirmation
+  // Function to delete selected plans
   const deleteSelectedPlans = () => {
     if (window.confirm("Are you sure you want to delete the selected plans?")) {
       setShoppingPlans((prevPlans) =>
