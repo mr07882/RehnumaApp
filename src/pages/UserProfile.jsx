@@ -81,7 +81,7 @@ const UserProfile = () => {
                 cursor: 'pointer',
               }}
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? '👁️' : '👁️‍🗨️'}
             </button>
           </div>
           <button
