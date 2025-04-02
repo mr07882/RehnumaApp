@@ -121,6 +121,27 @@
   font-size: 0.9rem;
 }
 
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 5%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6c4a9e;
+}
+
+.password-toggle:hover {
+  color: #4a2b7a;
+}
+
 @media (max-width: 768px) {
   .signup-container {
     flex-direction: column-reverse; /* Change order to make purple part appear below */

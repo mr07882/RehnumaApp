@@ -8,11 +8,15 @@ const SignUp = () => {
     email: '',
     address: '',
     phone: '',
+    password: '',
+    confirmPassword: '',
     locationPermission: false,
   });
 
   const [error, setError] = useState('');
   const [isSwiping, setIsSwiping] = useState(false); // State to control swipe animation
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,10 +29,15 @@ const SignUp = () => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    const { name, email, address, phone, locationPermission } = formData;
+    const { name, email, address, phone, password, confirmPassword, locationPermission } = formData;
 
-    if (!name || !email || !address || !phone || !locationPermission) {
+    if (!name || !email || !address || !phone || !password || !confirmPassword || !locationPermission) {
       setError('Please fill all fields and agree to location tracking.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
       return;
     }
 
@@ -85,6 +94,42 @@ const SignUp = () => {
             onChange={handleChange}
             required
           />
+          <div className="password-container">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Password"
+              className="signup-input"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? '👁️' : '👁️‍🗨️'}
+            </button>
+          </div>
+          <div className="password-container">
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              className="signup-input"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+            </button>
+          </div>
           <div className="signup-checkbox">
             <input
               type="checkbox"
