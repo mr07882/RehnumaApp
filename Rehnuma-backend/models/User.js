@@ -6,12 +6,18 @@ const userSchema = new mongoose.Schema({
   address: String,
   phone: String,
   password: String,
-  // Add these new fields
   location: {
     lat: Number,
     lng: Number
   },
-  nearbySupermarkets: [String],
+  nearbySupermarkets: [{
+    name: String,
+    address: String,
+    location: {
+      lat: Number,
+      lng: Number
+    }
+  }],
   resetCode: String,
   resetCodeExpires: Date
 });

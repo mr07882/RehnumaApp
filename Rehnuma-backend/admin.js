@@ -4,7 +4,10 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-// Connect to MongoDB
+function sanitizeModelName(name) {
+  return `${name.replace(/[^a-zA-Z0-9]/g, '')}Item`;
+}
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
@@ -19,7 +22,6 @@ async function processCSVFiles() {
   for (const file of files) {
     const supermarketName = path.basename(file, '.csv');
     const filePath = path.join(csvDir, file);
-    console.log(`Processing ${supermarketName}...`);
     await processCSV(supermarketName, filePath);
   }
 
@@ -29,15 +31,13 @@ async function processCSVFiles() {
 
 function processCSV(supermarketName, filePath) {
   return new Promise((resolve, reject) => {
-    // Dynamically create model
-    const modelName = `${supermarketName}Item`;
+    const modelName = sanitizeModelName(supermarketName);
     
-    // Cleanup existing model if present
     if (mongoose.models[modelName]) {
-      mongoose.deleteModel(modelName);
+      console.log(`Model ${modelName} already exists, skipping creation`);
+      return resolve();
     }
 
-    // Define schema
     const itemSchema = new mongoose.Schema({
       itemName: {
         type: String,
@@ -49,10 +49,9 @@ function processCSV(supermarketName, filePath) {
       }
     });
 
-    // Create model with collection name {supermarket}_items
-    const ItemModel = mongoose.model(modelName, itemSchema, `${supermarketName}`);
-
+    const ItemModel = mongoose.model(modelName, itemSchema, supermarketName);
     const items = [];
+    
     fs.createReadStream(filePath)
       .pipe(csv())
       .on('data', (row) => {
@@ -63,11 +62,9 @@ function processCSV(supermarketName, filePath) {
       })
       .on('end', async () => {
         try {
-          // Clear existing data
           await ItemModel.deleteMany({});
-          // Insert new data
           await ItemModel.insertMany(items);
-          console.log(`Inserted ${items.length} items into ${supermarketName}_items collection`);
+          console.log(`Inserted ${items.length} items into ${supermarketName} collection`);
           resolve();
         } catch (err) {
           reject(err);

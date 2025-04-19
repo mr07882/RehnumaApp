@@ -3,19 +3,35 @@ import axios from 'axios';
 const LocationHandler = async (onLocationSuccess, onError) => {
   const fetchNearbySupermarkets = async (latitude, longitude) => {
     const apiKey = '4f87702fb2be40368547d4b6073f9fbe';
-    const url = `https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:${longitude},${latitude},10000&bias=proximity:${longitude},${latitude}&apiKey=${apiKey}`;
+    const url = `https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:${longitude},${latitude},7000&bias=proximity:${longitude},${latitude}&limit=200&apiKey=${apiKey}`;
+
+    const exactNames = [
+      "Naheed Super Market",
+      "Chase up",
+      "SPAR",
+      "Imtiaz",
+      "Springs Store - Tipu Sultan Road"
+    ];
 
     try {
       const response = await axios.get(url);
       const supermarkets = response.data.features
         .filter((place) => {
-          const name = place.properties.name?.toLowerCase() || '';
-          return name.includes('naheed') || name.includes('imtiaz') || name.includes('springs') || name.includes('chase');
+          const name = place.properties.name || '';
+          return exactNames.includes(name);
         })
-        .map((place) => place.properties.name)
-        .filter(Boolean); // Ensure valid names
+        .map((place) => ({
+          name: place.properties.name,
+          address: place.properties.address_line2,
+          location: {
+            lat: place.properties.lat,
+            lng: place.properties.lon
+          }
+        }))
+        .filter(sm => sm.name);
 
       return supermarkets;
+
     } catch (err) {
       console.error('Error fetching supermarkets:', err);
       onError('Failed to fetch nearby supermarkets.');
@@ -27,8 +43,13 @@ const LocationHandler = async (onLocationSuccess, onError) => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        console.log('User Location:', { latitude, longitude });
         const supermarkets = await fetchNearbySupermarkets(latitude, longitude);
+        
+        if (supermarkets.length === 0) {
+          onError('No collaborating supermarkets found in your area.');
+          return;
+        }
+        
         onLocationSuccess(latitude, longitude, supermarkets);
       },
       (err) => {

@@ -111,4 +111,28 @@ exports.resetPasswordWithCode = async (req, res) => {
 };
   
 
-  
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const { name, address, phone, location, nearbySupermarkets } = req.body;
+    const updateFields = { name, address, phone };
+    
+    if (location) updateFields.location = location;
+    if (nearbySupermarkets) {
+      updateFields.nearbySupermarkets = nearbySupermarkets.map(sm => ({
+        name: sm.name,
+        address: sm.address,
+        location: sm.location
+      }));
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.userId,
+      updateFields,
+      { new: true }
+    ).select('-password');
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update profile', error });
+  }
+};
