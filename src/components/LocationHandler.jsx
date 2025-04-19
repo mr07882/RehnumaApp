@@ -10,7 +10,7 @@ const LocationHandler = async (onLocationSuccess, onError) => {
       const supermarkets = response.data.features
         .filter((place) => {
           const name = place.properties.name?.toLowerCase() || '';
-          return name.includes('naheed') || name.includes('imtiaz') || name.includes('springs') || name.includes('chase up');
+          return name.includes('naheed') || name.includes('imtiaz') || name.includes('springs') || name.includes('chase');
         })
         .map((place) => place.properties.name)
         .filter(Boolean); // Ensure valid names
