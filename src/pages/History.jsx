@@ -112,10 +112,12 @@ const History = () => {
 
   // Function to delete selected plans
   const deleteSelectedPlans = () => {
-    setShoppingPlans((prevPlans) =>
-      prevPlans.filter((plan) => !selectedPlans.includes(plan.id))
-    );
-    setSelectedPlans([]); // Clear selection
+    if (window.confirm("Are you sure you want to delete the selected plans?")) {
+      setShoppingPlans((prevPlans) =>
+        prevPlans.filter((plan) => !selectedPlans.includes(plan.id))
+      );
+      setSelectedPlans([]); // Clear selection
+    }
   };
 
   return (

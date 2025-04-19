@@ -20,6 +20,10 @@ const GeneratePlan = () => {
   };
 
   const handleGeneratePlan = () => {
+    if (items.length === 0) {
+      alert("Please enter some grocery items before generating the plan.");
+      return;
+    }
     navigate('/Output');
   };
 
