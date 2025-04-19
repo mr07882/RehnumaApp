@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; 
 import '../styles/SignUp.css';
 
 const SignUp = () => {
@@ -14,7 +15,7 @@ const SignUp = () => {
   });
 
   const [error, setError] = useState('');
-  const [isSwiping, setIsSwiping] = useState(false); // State to control swipe animation
+  const [isSwiping, setIsSwiping] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const SignUp = () => {
     });
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     const { name, email, address, phone, password, confirmPassword, locationPermission } = formData;
 
@@ -41,16 +42,29 @@ const SignUp = () => {
       return;
     }
 
-    setError('');
-    console.log('Sign-up successful:', formData);
-    navigate('/UserProfile'); // Redirect to UserProfile page
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+        name,
+        email,
+        address,
+        phone,
+        password,
+      });
+
+      console.log('Signup successful:', response.data);
+      setError('');
+      navigate('/login'); // ✅ Redirect to login after successful signup
+    } catch (err) {
+      console.error('Signup error:', err.response?.data || err.message);
+      setError(err.response?.data?.message || 'Signup failed');
+    }
   };
 
   const handleRedirectToLogin = () => {
-    setIsSwiping(true); // Trigger swipe animation
+    setIsSwiping(true);
     setTimeout(() => {
-      navigate('/login'); // Redirect after animation
-    }, 500); // Match the duration of the CSS transition
+      navigate('/login');
+    }, 500);
   };
 
   return (
@@ -144,7 +158,7 @@ const SignUp = () => {
           <button type="submit" className="signup-button">Create Account</button>
         </form>
       </div>
-      
+
       <div className="signup-right" onClick={handleRedirectToLogin}>
         <div className="signup-arrow">→</div>
         <div className="right-content">

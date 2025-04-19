@@ -1,32 +1,84 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import LocationHandler from '../components/LocationHandler';
 import '../styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-  const [isSwiping, setIsSwiping] = useState(false); // State to control swipe animation
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const [error, setError] = useState('');
+  const [locationData, setLocationData] = useState(null);
+  const [isLocationAllowed, setIsLocationAllowed] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleAllowLocation = () => {
+    LocationHandler(
+      (lat, lng, supermarkets) => {
+        setLocationData({ lat, lng, supermarkets });
+        setIsLocationAllowed(true);
+        setError('');
+      },
+      (errorMessage) => {
+        setError(errorMessage);
+        setIsLocationAllowed(false);
+      }
+    );
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Add login logic here
-    console.log('Email:', email, 'Password:', password);
-    navigate('/GeneratePlan'); // Redirect to GeneratePlan page
+    try {
+      // First perform login
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password
+      });
+
+      const { token, user } = response.data;
+
+      // Store initial user data
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Update profile with location data if available
+      if (locationData) {
+        await axios.put(
+          'http://localhost:5000/api/auth/profile',
+          {
+            location: {
+              lat: locationData.lat,
+              lng: locationData.lng
+            },
+            nearbySupermarkets: locationData.supermarkets
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+      }
+
+      navigate('/UserProfile');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    }
   };
 
   const handleRedirectToSignUp = () => {
-    setIsSwiping(true); // Trigger swipe animation
+    setIsSwiping(true);
     setTimeout(() => {
-      navigate('/SignUp'); // Redirect after animation
-    }, 500); // Match the duration of the CSS transition
+      navigate('/SignUp');
+    }, 500);
   };
 
   return (
     <div className={`login-container ${isSwiping ? 'swipe-right' : ''}`}>
       <div className="login-left" onClick={handleRedirectToSignUp}>
-        <div className="login-arrow">←</div> {/* Left-pointing arrow */}
+        <div className="login-arrow">←</div>
         <div className="left-content">
           <h2>New Here?</h2>
           <p>Click anywhere in this area to create a new account</p>
@@ -60,15 +112,28 @@ const Login = () => {
               {showPassword ? '👁️' : '👁️‍🗨️'}
             </button>
           </div>
-          <button type="submit" className="login-button">Login</button>
+          
+          <button
+            type="button"
+            className="location-button"
+            onClick={handleAllowLocation}
+          >
+            Allow Location Track
+          </button>
+
+          {error && <p className="error-message">{error}</p>}
+
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={!email || !password || !isLocationAllowed}
+          >
+            Login
+          </button>
         </form>
-        
       </div>
     </div>
   );
 };
 
 export default Login;
-
-
-

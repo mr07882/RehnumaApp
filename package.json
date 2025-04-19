@@ -7,10 +7,21 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "nodemon server.js"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.8.4",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "framer-motion": "^12.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
@@ -28,6 +39,20 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "nodemon": "^3.1.9",
     "vite": "^6.2.0"
-  }
+  },
+  "description": "Our platform will revolutionize the grocery shopping experience by leveraging technology tohelp consumers save money through intelligent shopping routes across multiple supermarkets. The application will provide an interface where users can input their grocery lists and receive optimized shopping plans that consider both product prices across different stores and transportation costs by finding the best combination of supermarkets nearby to purchase these items at the lowest total cost. The app will act as a guide for users by generating an optimized itinerary, helping them shop efficiently while minimizing costs. Hence, the name \"Rehnuma\" signifies its role in providing smart and strategic shopping directions.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mr07882/RehnumaApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mr07882/RehnumaApp/issues"
+  },
+  "homepage": "https://github.com/mr07882/RehnumaApp#readme"
 }
