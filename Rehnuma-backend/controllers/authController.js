@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const sendEmail = require('../utils/sendEmail');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -67,4 +68,47 @@ exports.updateUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Failed to update profile', error });
   }
 };
+
+
+exports.sendResetCode = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit PIN
+    const expiry = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    user.resetCode = code;
+    user.resetCodeExpires = expiry;
+    await user.save();
+
+    await sendEmail(email, 'Your Rehnuma Reset Code', `Your OTP is: ${code}`);
+    res.json({ message: 'Reset code sent to email' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to send reset code', error: err });
+  }
+};
+
+exports.resetPasswordWithCode = async (req, res) => {
+  const { email, code, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user || user.resetCode !== code || Date.now() > user.resetCodeExpires) {
+      return res.status(400).json({ message: 'Invalid or expired code' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetCode = undefined;
+    user.resetCodeExpires = undefined;
+    await user.save();
+
+    res.json({ message: 'Password has been reset' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to reset password', error: err });
+  }
+};
+  
+
   

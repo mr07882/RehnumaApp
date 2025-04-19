@@ -13,3 +13,8 @@ module.exports = router;
 const { updateUserProfile } = require('../controllers/authController');
 
 router.put('/profile', authMiddleware, updateUserProfile); // ✅ PUT for update
+
+const { sendResetCode, resetPasswordWithCode } = require('../controllers/authController');
+
+router.post('/forgot-password', sendResetCode);
+router.post('/reset-password', resetPasswordWithCode);

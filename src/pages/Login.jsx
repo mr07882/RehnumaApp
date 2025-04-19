@@ -31,19 +31,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // First perform login
       const response = await axios.post('http://localhost:5000/api/auth/login', {
         email,
         password
       });
 
       const { token, user } = response.data;
-
-      // Store initial user data
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Update profile with location data if available
       if (locationData) {
         await axios.put(
           'http://localhost:5000/api/auth/profile',
@@ -73,6 +69,10 @@ const Login = () => {
     setTimeout(() => {
       navigate('/SignUp');
     }, 500);
+  };
+
+  const handleForgotPassword = () => {
+    navigate('/forgot-password');
   };
 
   return (
@@ -120,6 +120,10 @@ const Login = () => {
           >
             Allow Location Track
           </button>
+
+          <p className="forgot-password-link" onClick={handleForgotPassword}>
+            Forgot Password?
+          </p>
 
           {error && <p className="error-message">{error}</p>}
 

@@ -6,23 +6,23 @@ import History from './pages/History';
 import GeneratePlan from './pages/GeneratePlan';
 import UserProfile from './pages/UserProfile';
 import Output from './pages/Output';
+import ForgotPassword from './pages/ForgotPassword';  
+import ResetPassword from './pages/ResetPassword';    
 
 const AppRouter = () => (
-    <BrowserRouter>
-      
-      <Routes>
-        <Route path="/" element={<Home />} />          {/* Home Page */}
-        <Route path="/Login" element={<Login />} />         {/* Cart Page */}
-        <Route path="/SignUp" element={<SignUp />} />   {/* Contact Page */}
-        <Route path="/History" element={<History />} /> {/* Checkout Page */}
-        <Route path="/GeneratePlan" element={<GeneratePlan />} />  {/* Category Page */}
-        <Route path="/UserProfile" element={<UserProfile />} />
-        <Route path="/Output" element={<Output />} />
-      </Routes>
-    </BrowserRouter>
-  );
-  
-  export default AppRouter;
-  
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/SignUp" element={<SignUp />} />
+      <Route path="/History" element={<History />} />
+      <Route path="/GeneratePlan" element={<GeneratePlan />} />
+      <Route path="/UserProfile" element={<UserProfile />} />
+      <Route path="/Output" element={<Output />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+    </Routes>
+  </BrowserRouter>
+);
 
-  
+export default AppRouter;

@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema({
     lat: Number,
     lng: Number
   },
-  nearbySupermarkets: [String]
+  nearbySupermarkets: [String],
+  resetCode: String,
+  resetCodeExpires: Date
 });
 
 module.exports = mongoose.model('User', userSchema);
