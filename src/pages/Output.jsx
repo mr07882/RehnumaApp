@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../styles/Output.css';
+import axios from 'axios';
 
 const Output = () => {
   const navigate = useNavigate();
@@ -32,9 +33,40 @@ const Output = () => {
     setCurrentSlide(prev => (prev === 0 ? planData.itinerary.length - 1 : prev - 1));
   };
 
-  const handleSavePlan = () => {
-    alert('Your shopping plan has been saved to your history!');
-    navigate('/History');
+  const handleSavePlan = async () => {
+    const planName = window.prompt('Enter a name for your plan:');
+    if (!planName?.trim()) return;
+  
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No authentication token found');
+  
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/save-plan',
+        {
+          planName: planName.trim(),
+          planData: {
+            itinerary: planData.itinerary,
+            totalCost: planData.totalCost,
+            unavailableItems: planData.unavailableItems
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+  
+      if (response.data.message) {
+        alert('Plan saved successfully!');
+        navigate('/History');
+      }
+    } catch (error) {
+      console.error('Save plan error:', error);
+      const errorMessage = error.response?.data?.error || error.message;
+      alert(`Failed to save plan: ${errorMessage}`);
+    }
   };
 
   return (

@@ -19,7 +19,12 @@ const userSchema = new mongoose.Schema({
     }
   }],
   resetCode: String,
-  resetCodeExpires: Date
+  resetCodeExpires: Date,
+  plans: [{
+    name: String,
+    data: Object,
+    createdAt: { type: Date, default: Date.now }
+  }]
 });
 
 module.exports = mongoose.model('User', userSchema);

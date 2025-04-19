@@ -41,10 +41,13 @@ exports.login = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select('-password');
+    const user = await User.findById(req.userId)
+      .select('-password')
+      .populate('plans'); // Add this if using population
+
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Could not fetch user profile', error });
+    res.status(500).json({ message: 'Could not fetch profile', error });
   }
 };
 
@@ -134,5 +137,40 @@ exports.updateUserProfile = async (req, res) => {
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: 'Failed to update profile', error });
+  }
+};
+
+// In controllers/authController.js
+exports.savePlan = async (req, res) => {
+  try {
+    const { planName, planData } = req.body;
+    
+    if (!planName?.trim() || !planData) {
+      return res.status(400).json({ 
+        message: 'Plan name and data are required' 
+      });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { $push: { plans: { 
+        name: planName.trim(), 
+        data: planData 
+      }}},
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'Plan saved successfully' });
+    
+  } catch (error) {
+    console.error('Save plan error:', error);
+    res.status(500).json({ 
+      message: 'Failed to save plan',
+      error: error.message 
+    });
   }
 };

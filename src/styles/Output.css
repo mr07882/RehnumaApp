@@ -208,6 +208,10 @@
   .save-button {
     background-color: #4a2b7a;
     color: white;
+    /* Add these properties */
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
   }
   
   .save-button:hover {
