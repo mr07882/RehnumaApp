@@ -53,7 +53,7 @@ const SignUp = () => {
 
       console.log('Signup successful:', response.data);
       setError('');
-      navigate('/login'); // ✅ Redirect to login after successful signup
+      navigate('/login'); 
     } catch (err) {
       console.error('Signup error:', err.response?.data || err.message);
       setError(err.response?.data?.message || 'Signup failed');

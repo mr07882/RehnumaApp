@@ -34,7 +34,7 @@ const ResetPassword = () => {
 
       setMessage(res.data.message);
       setError('');
-      localStorage.removeItem('resetEmail'); // ✅ cleanup
+      localStorage.removeItem('resetEmail'); 
 
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {

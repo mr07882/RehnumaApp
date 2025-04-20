@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/signup', signup);
 router.post('/login', login);
 router.get('/profile', authMiddleware, getUserProfile);
-router.put('/profile', authMiddleware, updateUserProfile); // ✅ PUT for update
+router.put('/profile', authMiddleware, updateUserProfile); 
 router.post('/forgot-password', sendResetCode);
 router.post('/reset-password', resetPasswordWithCode);
 router.post('/save-plan', authMiddleware, savePlan);

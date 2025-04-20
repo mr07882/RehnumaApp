@@ -8,7 +8,7 @@ const Home = () => {
 
   const handleNavigation = (path) => {
     setIsExiting(true);
-    setTimeout(() => navigate(path), 500); // Delay matches the animation duration
+    setTimeout(() => navigate(path), 500); 
   };
 
   return (
@@ -29,7 +29,7 @@ const Home = () => {
         </button>
       </div>
 
-      {/* New description section */}
+      
       <div className="app-description">
         <h2 className="description-title">Your Smart Shopping Companion</h2>
         <div className="description-content">

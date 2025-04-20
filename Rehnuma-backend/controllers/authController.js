@@ -43,7 +43,7 @@ exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.userId)
       .select('-password')
-      .populate('plans'); // Add this if using population
+      .populate('plans'); 
 
     res.json(user);
   } catch (error) {
@@ -56,7 +56,7 @@ exports.updateUserProfile = async (req, res) => {
     const { name, address, phone, location, nearbySupermarkets } = req.body;
     const updateFields = { name, address, phone };
     
-    // Add location and supermarkets to update fields
+ 
     if (location) updateFields.location = location;
     if (nearbySupermarkets) updateFields.nearbySupermarkets = nearbySupermarkets;
 
@@ -140,7 +140,7 @@ exports.updateUserProfile = async (req, res) => {
   }
 };
 
-// In controllers/authController.js
+
 exports.savePlan = async (req, res) => {
   try {
     const { planName, planData } = req.body;
@@ -185,7 +185,7 @@ exports.deletePlans = async (req, res) => {
 
     const user = await User.findByIdAndUpdate(
       req.userId,
-      { $pull: { plans: { _id: { $in: planIds } } } }, // Remove plans with matching IDs
+      { $pull: { plans: { _id: { $in: planIds } } } }, 
       { new: true }
     );
 
