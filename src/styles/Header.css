@@ -89,3 +89,20 @@
       font-size: 0.8rem;
     }
   }
+
+  .main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px; /* Add fixed height */
+    background-color: #4b05f03f;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(74, 43, 122, 0.1);
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        height: 150px; /* Adjusted height for mobile layout */
+    }
+}

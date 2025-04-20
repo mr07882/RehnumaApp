@@ -70,6 +70,7 @@ const Output = () => {
   };
 
   return (
+  
     <div className="output-container">
       <Header />
       <div className="output-content">

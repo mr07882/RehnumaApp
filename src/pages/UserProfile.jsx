@@ -7,7 +7,6 @@ const UserProfile = () => {
   const [userData, setUserData] = useState(null);
   const [editedData, setEditedData] = useState({});
   const [isChanged, setIsChanged] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -62,10 +61,6 @@ const UserProfile = () => {
         alert('Something went wrong while updating profile.');
       }
     }
-  };  
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   if (!userData) return <p>Loading...</p>;
@@ -84,19 +79,6 @@ const UserProfile = () => {
           <input type="text" name="phone" value={editedData.phone} onChange={handleChange} />
           <label>Email</label>
           <input type="text" value={editedData.email} disabled />
-          <label>Password</label>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value="******"
-              readOnly
-              style={{ flex: 1 }}
-            />
-            <button type="button" onClick={togglePasswordVisibility} style={{ marginLeft: '10px', padding: '5px 10px', cursor: 'pointer' }}>
-              {showPassword ? '👁️' : '👁️‍🗨️'}
-            </button>
-          </div>
           <button type="button" className={`save-button ${isChanged ? 'enabled' : ''}`} onClick={handleSave} disabled={!isChanged}>
             Save Changes
           </button>

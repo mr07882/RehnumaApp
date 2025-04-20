@@ -8,6 +8,18 @@ function sanitizeModelName(name) {
   return `${name.replace(/[^a-zA-Z0-9]/g, '')}Item`;
 }
 
+function normalizePrice(priceString) {
+  // Convert to string and clean the value
+  const cleaned = String(priceString)
+    .replace(/[^\d.,]/g, '') // Remove non-numeric characters except dots and commas
+    .replace(/,/g, m => (/(\.\d+)$/.test(cleaned) ? '' : '.')) // Handle comma as thousand separator or decimal
+    .replace(/(\..*)\./g, '$1'); // Remove extra decimal points
+
+  // Parse to float and validate
+  const parsed = parseFloat(cleaned);
+  return isNaN(parsed) ? null : parsed;
+}
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
@@ -41,30 +53,56 @@ function processCSV(supermarketName, filePath) {
     const itemSchema = new mongoose.Schema({
       itemName: {
         type: String,
-        required: true
+        required: true,
+        trim: true
       },
       price: {
         type: Number,
-        required: true
+        required: true,
+        min: 0,
+        validate: {
+          validator: Number.isFinite,
+          message: 'Price must be a finite number'
+        }
       }
     });
 
     const ItemModel = mongoose.model(modelName, itemSchema, supermarketName);
     const items = [];
+    let invalidCount = 0;
     
     fs.createReadStream(filePath)
       .pipe(csv())
       .on('data', (row) => {
-        items.push({
-          itemName: row.name,
-          price: parseFloat(row.price) 
-        });
+        try {
+          const price = normalizePrice(row.price);
+          
+          if (!price) {
+            invalidCount++;
+            console.log(`Invalid price in row: ${JSON.stringify(row)}`);
+            return;
+          }
+
+          items.push({
+            itemName: String(row.name).trim(),
+            price: price
+          });
+        } catch (error) {
+          invalidCount++;
+          console.error(`Error processing row: ${error.message}`);
+        }
       })
       .on('end', async () => {
         try {
+          console.log(`Processing ${supermarketName}:`);
+          console.log(`- Valid items: ${items.length}`);
+          console.log(`- Invalid items: ${invalidCount}`);
+
           await ItemModel.deleteMany({});
-          await ItemModel.insertMany(items);
-          console.log(`Inserted ${items.length} items into ${supermarketName} collection`);
+          if (items.length > 0) {
+            await ItemModel.insertMany(items);
+          }
+          console.log(`Successfully inserted ${items.length} items into ${supermarketName} collection\n`);
           resolve();
         } catch (err) {
           reject(err);

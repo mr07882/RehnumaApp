@@ -32,7 +32,7 @@
   flex-direction: column;
   position: absolute;
   bottom: 15%;
-  right: 25%;
+  right: 22%;
   gap: 1rem;
 }
 
@@ -43,6 +43,8 @@
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
+  width: 12vw; /* Add a fixed width to ensure uniform size */
+  text-align: center; /* Ensure text is centered */
 }
 
 .login-btn {

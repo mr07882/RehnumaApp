@@ -111,6 +111,9 @@ const Login = () => {
             >
               {showPassword ? '👁️' : '👁️‍🗨️'}
             </button>
+            <p className="forgot-password-link" onClick={handleForgotPassword}>
+              Forgot Password?
+            </p>
           </div>
           
           <button
@@ -120,10 +123,6 @@ const Login = () => {
           >
             Allow Location Track
           </button>
-
-          <p className="forgot-password-link" onClick={handleForgotPassword}>
-            Forgot Password?
-          </p>
 
           {error && <p className="error-message">{error}</p>}
 

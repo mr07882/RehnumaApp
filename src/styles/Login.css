@@ -93,12 +93,14 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex-direction: column; /* Stack elements vertically */
 }
 
 .password-toggle {
   position: absolute;
   right: 10px;
-  top: 5%;
+  top: 50%;
+  transform: translateY(-5%);
   background: none;
   border: none;
   cursor: pointer;
@@ -204,13 +206,11 @@
   text-align: center;
 }
 
-
-
 .forgot-password-link {
+  align-self: flex-end; /* Align to the bottom-right */
+  margin-top: 5px;
   color: #007bff;
   cursor: pointer;
-  margin: 10px 0;
-  text-align: center;
   font-size: 0.9rem;
   transition: color 0.3s ease;
 }

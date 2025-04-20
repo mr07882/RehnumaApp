@@ -1,9 +1,10 @@
 .output-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #F8F5FF;
-    min-height: 100vh;
-    padding-top: 80px; /* Space for fixed header */
-  }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #F8F5FF;
+  min-height: 100vh;
+  padding-top: 100px; /* Increased from 80px */
+  background-color: transparent;
+}
   
   .output-content {
     padding: 20px;
@@ -297,3 +298,17 @@
     }
   }
   
+
+
+/* Mobile-first media queries */
+@media (max-width: 768px) {
+    .output-container {
+        padding-top: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .output-container {
+        padding-top: 160px; /* Adjust for stacked mobile navigation */
+    }
+}

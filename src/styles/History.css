@@ -18,15 +18,6 @@ body {
 
 
 
-.history-container {
-  background: none; /* Remove background from container */
-  min-height: 100vh;
-  padding: 2rem;
-  padding-top: 100px;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
 
 .history-content {
   position: relative;
@@ -44,6 +35,7 @@ body {
   z-index: 0;
   pointer-events: none;
   transition: width 0.3s ease;
+  
 }
 
 .history-heading {
@@ -77,17 +69,36 @@ body {
   border-color: #4a2b7a;
 }
 
-.plans-list {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Remove conflicting background definitions */
+.history-container {
+  background: transparent !important; /* Force transparent background */
+  min-height: 100vh;
+  padding-top: 100px; /* Match header height */
+  width: 100%;
   position: relative;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+}
+
+/* Remove duplicate .history-container definition */
+.plans-list {
+  background-color: transparent;
   border-radius: 15px;
   padding: 2rem;
   box-shadow: 0 4px 20px rgba(74, 43, 122, 0.15);
 }
 
+/* Add responsive header spacing */
+@media (max-width: 768px) {
+  .history-container {
+    padding-top: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .history-container {
+    padding-top: 160px;
+  }
+}
 .generate-plan-button {
   position: fixed;
   top: 50%;
@@ -109,10 +120,7 @@ body {
   z-index: 3;
 }
 
-.generate-plan-button:hover {
-  color: #4a2b7a;
-  transform: translateY(-50%) scale(1.1);
-}
+
 
 /* Rest of the existing CSS remains unchanged below this line */
 
@@ -157,7 +165,7 @@ body {
 }
 
 .plan-details {
-  padding: 1.5rem;
+  padding: 2rem;
   max-height: 400px;
   overflow-y: auto;
 }
@@ -176,21 +184,6 @@ body {
   
 }
 
-.item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.item {
-  padding: 0.5rem 1rem;
-  margin: 0.3rem 0;
-  background: white;
-  border-radius: 5px;
-  color: #4a2b7a;
-  display: flex;
-  align-items: center;
-}
 
 .item::before {
   
@@ -270,14 +263,6 @@ body {
   
 }
 
-/* History.css */
-.history-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #F8F5FF;
-  min-height: 100vh;
-  padding-top: 80px;
-}
-
 .history-heading {
   text-align: center;
   color: #4a2b7a;
@@ -320,15 +305,10 @@ body {
   cursor: not-allowed;
 }
 
-/* Plans List */
-.plans-list {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+
 
 .plan-item {
-  background: white;
+  background-color: transparent;
   border-radius: 15px;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 6px rgba(74, 43, 122, 0.1);
@@ -403,29 +383,7 @@ body {
   margin: 2rem 0;
 }
 
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #4a2b7a;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.carousel-arrow.left {
-  left: -25px;
-}
-
-.carousel-arrow.right {
-  right: -25px;
-}
 
 .itinerary-stop {
   background-color: white;
@@ -434,6 +392,7 @@ body {
   margin-bottom: 20px;
   box-shadow: 0 4px 15px rgba(74, 43, 122, 0.1);
   border: 1px solid #e0d0ff;
+  
 }
 
 .stop-header {
@@ -442,6 +401,7 @@ body {
   margin-bottom: 15px;
   border-bottom: 1px solid #f0e5ff;
   padding-bottom: 15px;
+  
 }
 
 .stop-number {
@@ -480,6 +440,7 @@ body {
   font-size: 0.9rem;
   display: flex;
   gap: 1rem;
+  
 }
 
 .stop-total {
@@ -503,6 +464,7 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
+  
 }
 
 .item {
@@ -521,6 +483,7 @@ body {
   color: #4df2fa;
   margin-right: 10px;
   font-size: 1.2rem;
+  
 }
 
 .item-details {
@@ -528,6 +491,7 @@ body {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  
 }
 
 .matched-item {
@@ -543,6 +507,8 @@ body {
 .item-price {
   color: #4a2b7a;
   font-weight: 500;
+  padding: auto;
+  margin-left: auto;
 }
 
 .unavailable-section {
