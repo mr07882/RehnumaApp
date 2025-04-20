@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import '../styles/UserProfile.css';
 import Header from '../components/Header';
 
@@ -7,6 +8,7 @@ const UserProfile = () => {
   const [userData, setUserData] = useState(null);
   const [editedData, setEditedData] = useState({});
   const [isChanged, setIsChanged] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -63,6 +65,11 @@ const UserProfile = () => {
     }
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem('token'); // Remove the token from localStorage
+    navigate('/'); // Redirect to the home page
+  };
+
   if (!userData) return <p>Loading...</p>;
 
   return (
@@ -81,6 +88,9 @@ const UserProfile = () => {
           <input type="text" value={editedData.email} disabled />
           <button type="button" className={`save-button ${isChanged ? 'enabled' : ''}`} onClick={handleSave} disabled={!isChanged}>
             Save Changes
+          </button>
+          <button type="button" className="signout-button" onClick={handleSignOut}>
+            Sign Out
           </button>
         </form>
       </div>

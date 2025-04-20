@@ -33,7 +33,7 @@
   border-radius: 5px;
 }
 
-.save-button {
+.save-button  {
   margin-top: 20px;
   padding: 10px;
   background-color: #4a2b7a;
@@ -43,6 +43,7 @@
   cursor: pointer;
   opacity: 0.5;
   pointer-events: none;
+  transform: translate(25%);
 }
 
 .save-button.enabled {
@@ -52,4 +53,14 @@
 
 .confirm-dialog {
   display: none;
+}
+
+.signout-button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #4a2b7a; /* Red color for sign out */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
