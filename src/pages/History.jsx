@@ -37,13 +37,16 @@ const History = () => {
 
   const deleteSelectedPlans = async () => {
     if (!window.confirm("Delete selected plans permanently?")) return;
-    
+
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/auth/profile', 
-        { plans: shoppingPlans.filter(p => !selectedPlans.includes(p._id)) },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      // Send a request to the backend to delete the selected plans
+      await axios.delete('http://localhost:5000/api/auth/delete-plans', {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { planIds: selectedPlans }, // Pass the selected plan IDs
+      });
+
+      // Update the frontend state to reflect the deletion
       setShoppingPlans(prev => prev.filter(p => !selectedPlans.includes(p._id)));
       setSelectedPlans([]);
     } catch (error) {

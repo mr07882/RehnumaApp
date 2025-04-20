@@ -4,6 +4,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const { savePlan } = require('../controllers/authController');
 const { updateUserProfile } = require('../controllers/authController');
 const { sendResetCode, resetPasswordWithCode } = require('../controllers/authController');
+const { deletePlans } = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.put('/profile', authMiddleware, updateUserProfile); // ✅ PUT for update
 router.post('/forgot-password', sendResetCode);
 router.post('/reset-password', resetPasswordWithCode);
 router.post('/save-plan', authMiddleware, savePlan);
+router.delete('/delete-plans', authMiddleware, deletePlans);
 
 module.exports = router;
 

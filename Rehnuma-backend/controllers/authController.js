@@ -174,3 +174,28 @@ exports.savePlan = async (req, res) => {
     });
   }
 };
+
+exports.deletePlans = async (req, res) => {
+  try {
+    const { planIds } = req.body;
+
+    if (!planIds || !Array.isArray(planIds)) {
+      return res.status(400).json({ message: 'Invalid plan IDs' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { $pull: { plans: { _id: { $in: planIds } } } }, // Remove plans with matching IDs
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'Plans deleted successfully', plans: user.plans });
+  } catch (error) {
+    console.error('Delete plans error:', error);
+    res.status(500).json({ message: 'Failed to delete plans', error });
+  }
+};
