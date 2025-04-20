@@ -43,7 +43,8 @@
   cursor: pointer;
   opacity: 0.5;
   pointer-events: none;
-  transform: translate(25%);
+  align-self: center;
+  
 }
 
 .save-button.enabled {
@@ -58,7 +59,7 @@
 .signout-button {
   margin-top: 10px;
   padding: 10px;
-  background-color: #4a2b7a; /* Red color for sign out */
+  background-color: #4a2b7a;
   color: white;
   border: none;
   border-radius: 5px;
