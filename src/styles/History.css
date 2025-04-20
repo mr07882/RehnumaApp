@@ -269,3 +269,346 @@ body {
 
   
 }
+
+/* History.css */
+.history-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #F8F5FF;
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.history-heading {
+  text-align: center;
+  color: #4a2b7a;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(74, 43, 122, 0.1);
+}
+
+/* Search and Controls */
+.controls {
+  display: flex;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 0 20px;
+}
+
+.search-bar {
+  flex: 1;
+  padding: 0.8rem;
+  border: 2px solid #6c4a9e;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ECEEEB;
+}
+
+.delete-button {
+  padding: 0.8rem 1.5rem;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Plans List */
+.plans-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.plan-item {
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(74, 43, 122, 0.1);
+  transition: all 0.3s ease;
+}
+
+.plan-item.expanded {
+  box-shadow: 0 6px 12px rgba(74, 43, 122, 0.15);
+}
+
+.plan-header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  background: #6c4a9e;
+  border-radius: 15px;
+}
+
+.plan-header h3 {
+  color: white;
+  margin: 0;
+  flex: 1;
+  font-size: 1.2rem;
+}
+
+.toggle-icon {
+  color: white;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.plan-item.expanded .toggle-icon {
+  transform: rotate(45deg);
+}
+
+/* Expanded Plan Styles (from Output.css) */
+.savings-banner {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(74, 43, 122, 0.1);
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #e0d0ff;
+}
+
+.savings-item.highlight {
+  background-color: #f0e5ff;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.savings-label {
+  display: block;
+  font-weight: 600;
+  color: #6c4a9e;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.savings-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4a2b7a;
+}
+
+.carousel-container {
+  position: relative;
+  margin: 2rem 0;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #4a2b7a;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-arrow.left {
+  left: -25px;
+}
+
+.carousel-arrow.right {
+  right: -25px;
+}
+
+.itinerary-stop {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(74, 43, 122, 0.1);
+  border: 1px solid #e0d0ff;
+}
+
+.stop-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f0e5ff;
+  padding-bottom: 15px;
+}
+
+.stop-number {
+  background-color: #4a2b7a;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+.stop-info {
+  flex: 1;
+}
+
+.store-name {
+  color: #4a2b7a;
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.store-address {
+  color: #6c4a9e;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.transport-details {
+  color: #4df2fa;
+  margin: 5px 0 0 0;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.stop-total {
+  text-align: right;
+  min-width: 120px;
+}
+
+.total-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #6c4a9e;
+}
+
+.total-amount {
+  font-weight: bold;
+  color: #4a2b7a;
+  font-size: 1.1rem;
+}
+
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f8f5ff;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.item:hover {
+  background-color: #f8f5ff;
+}
+
+.item-bullet {
+  color: #4df2fa;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.matched-item {
+  color: #4a2b7a;
+}
+
+.original-search {
+  color: #6c4a9e;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.item-price {
+  color: #4a2b7a;
+  font-weight: 500;
+}
+
+.unavailable-section {
+  padding: 1rem;
+  background: #fff3cd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.unavailable-section h3 {
+  color: #856404;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .history-heading {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  .carousel-arrow {
+    position: static;
+    margin: 0.5rem;
+  }
+
+  .stop-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stop-total {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: left;
+  }
+
+  .item-details {
+    flex-wrap: wrap;
+  }
+
+  .original-search {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .history-heading {
+    font-size: 1.8rem;
+  }
+
+  .plan-header h3 {
+    font-size: 1rem;
+  }
+
+  .savings-value {
+    font-size: 1.3rem;
+  }
+
+  .store-name {
+    font-size: 1.1rem;
+  }
+}

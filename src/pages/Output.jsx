@@ -90,10 +90,7 @@ const Output = () => {
         ) : (
           <>
             <div className="carousel-container">
-              <button className="carousel-arrow left" onClick={prevSlide}>
-                <FaChevronLeft />
-              </button>
-
+              
               <div className="carousel-slides">
                 {planData.itinerary.map((stop, index) => (
                   <div
@@ -140,9 +137,6 @@ const Output = () => {
                 ))}
               </div>
 
-              <button className="carousel-arrow right" onClick={nextSlide}>
-                <FaChevronRight />
-              </button>
             </div>
 
             <div className="carousel-dots">

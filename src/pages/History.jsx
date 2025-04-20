@@ -1,188 +1,180 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-import '../styles/History.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../components/Header';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import '../styles/History.css';
 
 const History = () => {
   const [expandedPlan, setExpandedPlan] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [selectedPlans, setSelectedPlans] = useState([]); // State for selected plans
-  const [shoppingPlans, setShoppingPlans] = useState([ // Convert to state
-    {
-      id: 1,
-      name: "Weekly Grocery Plan",
-      totalCost: 5000, // Added total cost
-      details: [
-        {
-          store: "Naheed Supermarket",
-          items: ["Soap", "XYZ Microwave", "Quinoa", "Olive Oil", "Toothpaste"]
-        },
-        {
-          store: "Imtiaz",
-          items: ["Daal Grinder", "Washing Powder", "Rice 5kg", "Disinfectant Spray"]
-        },
-        {
-          store: "Spar",
-          items: ["Chocolates", "Ice Cream", "Frozen Pizza", "Soft Drinks"]
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "Emergency Purchase",
-      totalCost: 2000, // Added total cost
-      details: [
-        {
-          store: "Hyperstar",
-          items: ["Laptop Bag", "USB Cable", "Notebooks", "Pens"]
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: "Purchase 1",
-      totalCost: 1500, // Added total cost
-      details: [
-        {
-          store: "Hyperstar",
-          items: ["Laptop Bag", "USB Cable", "Notebooks", "Pens"]
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: "Purchase 2",
-      totalCost: 2500, // Added total cost
-      details: [
-        {
-          store: "Hyperstar",
-          items: ["Laptop Bag", "USB Cable", "Notebooks", "Pens"]
-        }
-      ]
-    },
-    {
-      id: 5,
-      name: "Purchase 3",
-      totalCost: 3000, // Added total cost
-      details: [
-        {
-          store: "Hyperstar",
-          items: ["Laptop Bag", "USB Cable", "Notebooks", "Pens"]
-        }
-      ]
-    },
-    {
-      id: 6,
-      name: "Purchase 4",
-      totalCost: 4000, // Added total cost
-      details: [
-        {
-          store: "Hyperstar",
-          items: ["Laptop Bag", "USB Cable", "Notebooks", "Pens"]
-        }
-      ]
-    },
-    {
-      id: 7,
-      name: "Purchase 6",
-      totalCost: 6000, // Added total cost
-      details: [
-        {
-          store: "Hyperstar",
-          items: ["Laptop Bag", "USB Cable", "Notebooks", "Pens"]
-        }
-      ]
-    }
-  ]); // End of shoppingPlans state
-  const navigate = useNavigate(); // Initialize navigate function
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPlans, setSelectedPlans] = useState([]);
+  const [shoppingPlans, setShoppingPlans] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
-  // Filter plans based on search query
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:5000/api/auth/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setShoppingPlans(response.data.plans || []);
+      } catch (error) {
+        console.error('Error fetching plans:', error);
+        alert('Failed to load plans. Please try again.');
+      }
+    };
+    fetchPlans();
+  }, []);
+
+  const togglePlanSelection = (planId) => {
+    setSelectedPlans(prev => 
+      prev.includes(planId) ? prev.filter(id => id !== planId) : [...prev, planId]
+    );
+  };
+
+  const deleteSelectedPlans = async () => {
+    if (!window.confirm("Delete selected plans permanently?")) return;
+    
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put('http://localhost:5000/api/auth/profile', 
+        { plans: shoppingPlans.filter(p => !selectedPlans.includes(p._id)) },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setShoppingPlans(prev => prev.filter(p => !selectedPlans.includes(p._id)));
+      setSelectedPlans([]);
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Failed to delete plans');
+    }
+  };
+
+  const nextSlide = () => setCurrentSlide(prev => (prev + 1) % expandedPlan.data.itinerary.length);
+  const prevSlide = () => setCurrentSlide(prev => (prev - 1 + expandedPlan.data.itinerary.length) % expandedPlan.data.itinerary.length);
+
   const filteredPlans = shoppingPlans.filter(plan =>
     plan.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Function to toggle plan selection
-  const togglePlanSelection = (planId) => {
-    setSelectedPlans((prevSelected) =>
-      prevSelected.includes(planId)
-        ? prevSelected.filter((id) => id !== planId)
-        : [...prevSelected, planId]
-    );
-  };
-
-  // Function to delete selected plans
-  const deleteSelectedPlans = () => {
-    if (window.confirm("Are you sure you want to delete the selected plans?")) {
-      setShoppingPlans((prevPlans) =>
-        prevPlans.filter((plan) => !selectedPlans.includes(plan.id))
-      );
-      setSelectedPlans([]); // Clear selection
-    }
-  };
-
   return (
     <div className="history-container">
       <Header />
-      <h1 className="history-heading">YOUR PAST SHOPPING PLANS</h1>
-      <input 
-        type="text" 
-        placeholder="Search plans..." 
-        className="search-bar" 
-        value={searchQuery} 
-        onChange={(e) => setSearchQuery(e.target.value)} 
-      />
-      <button 
-        className="generate-plan-button" 
-        onClick={deleteSelectedPlans} // Update button to delete selected plans
-      >
-        DELETE SELECTED PLANS
-      </button>
-      <img 
-      src="/Im1_History.png" 
-      alt="Decorative history" 
-      className="history-background-image"
-      />
+      <h1 className="history-heading">YOUR SAVED SHOPPING PLANS</h1>
+      
+      <div className="controls">
+        <input
+          type="text"
+          placeholder="Search plans..."
+          className="search-bar"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button 
+          className="delete-button"
+          onClick={deleteSelectedPlans}
+          disabled={selectedPlans.length === 0}
+        >
+          DELETE SELECTED
+        </button>
+      </div>
+
       <div className="plans-list">
-        {filteredPlans.map((plan) => (
+        {filteredPlans.map(plan => (
           <div 
-            key={plan.id}
-            className={`plan-item ${expandedPlan === plan.id ? 'expanded' : ''}`}
+            key={plan._id}
+            className={`plan-item ${expandedPlan?._id === plan._id ? 'expanded' : ''}`}
           >
             <div 
               className="plan-header"
-              onClick={() => setExpandedPlan(expandedPlan === plan.id ? null : plan.id)}
+              onClick={() => setExpandedPlan(expandedPlan?._id === plan._id ? null : plan)}
             >
-              <input 
-                type="checkbox" 
-                checked={selectedPlans.includes(plan.id)} 
-                onChange={() => togglePlanSelection(plan.id)} 
+              <input
+                type="checkbox"
+                checked={selectedPlans.includes(plan._id)}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  togglePlanSelection(plan._id);
+                }}
               />
               <h3>{plan.name}</h3>
               <span className="toggle-icon">
-                {expandedPlan === plan.id ? '−' : '+'}
+                {expandedPlan?._id === plan._id ? '−' : '+'}
               </span>
             </div>
-            
-            {expandedPlan === plan.id && (
+
+            {expandedPlan?._id === plan._id && (
               <div className="plan-details">
-                <p><strong>Total Cost:</strong> Rs. {plan.totalCost}</p> {/* Display total cost */}
-                {plan.details.map((store, index) => (
-                  <div key={index} className="store-section">
-                    <h4 className="store-name">
-                      {index === 0 ? 'First Go To: ' : 
-                       index === plan.details.length - 1 ? 'Finally Go To: ' : 
-                       'Then Go To: '}
-                      {store.store}
-                    </h4>
-                    <ul className="item-list">
-                      {store.items.map((item, itemIndex) => (
-                        <li key={itemIndex} className="item">
-                          ➔ {item}
-                        </li>
+                <div className="savings-banner">
+                  <div className="savings-item highlight">
+                    <span className="savings-label">Total Cost:</span>
+                    <span className="savings-value">Rs. {plan.data.totalCost}</span>
+                  </div>
+                </div>
+
+                <div className="carousel-container">
+                  
+
+                  <div className="carousel-slides">
+                    {plan.data.itinerary.map((stop, index) => (
+                      <div
+                        key={stop.store}
+                        className={`itinerary-stop ${index === currentSlide ? 'active' : ''}`}
+                      >
+                        <div className="stop-header">
+                          <div className="stop-number">{index + 1}</div>
+                          <div className="stop-info">
+                            <h3 className="store-name">{stop.store}</h3>
+                            <p className="store-address">{stop.address}</p>
+                            <div className="transport-details">
+                              <span>Distance: {stop.distance.toFixed(1)} km</span>
+                              <span>⏱️ {stop.travelTime}</span>
+                            </div>
+                          </div>
+                          <div className="stop-total">
+                            <div className="cost-breakdown">
+                              <span className="total-label">Items Total:</span>
+                              <span className="total-amount">Rs. {stop.storeTotal}</span>
+                            </div>
+                            <div className="cost-breakdown">
+                              <span className="total-label">Transport Cost:</span>
+                              <span className="total-amount">Rs. {stop.transportCost}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <ul className="item-list">
+                          {stop.items.map((item, itemIndex) => (
+                            <li key={`${stop.store}-${itemIndex}`} className="item">
+                              <span className="item-bullet">➔</span>
+                              <div className="item-details">
+                                <span className="matched-item">{item.itemName}</span>
+                                {item.originalSearch.toLowerCase() !== item.itemName.toLowerCase() && (
+                                  <span className="original-search">(Searched for: {item.originalSearch})</span>
+                                )}
+                                <span className="item-price">Rs. {item.price}</span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+
+                {plan.data.unavailableItems.length > 0 && (
+                  <div className="unavailable-section">
+                    <h3>⚠️ Unavailable Items:</h3>
+                    <ul>
+                      {plan.data.unavailableItems.map((item, index) => (
+                        <li key={index}>{item}</li>
                       ))}
                     </ul>
                   </div>
-                ))}
+                )}
               </div>
             )}
           </div>
@@ -193,3 +185,4 @@ const History = () => {
 };
 
 export default History;
+
