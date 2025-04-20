@@ -50,7 +50,7 @@ async function processItems(items, supermarkets, userLocation) {
   
   for (const rawItem of items) {
     const searchTerm = rawItem.trim().toLowerCase();
-    let bestOption = null;
+    let bestOptions = [];
 
     for (const sm of supermarkets) {
       try {
@@ -75,49 +75,103 @@ async function processItems(items, supermarkets, userLocation) {
 
         const items = await Model.find({});
         const fuse = new Fuse(items, {
-          keys: ['itemName'],
-          threshold: 0.4,
-          includeScore: true
-        });
+            keys: ['itemName'],
+            threshold: 0.5, // Increased threshold for more flexibility
+            includeScore: true,
+            ignoreLocation: true,
+            minMatchCharLength: 2, // Allow shorter matches
+            shouldSort: true,
+            useExtendedSearch: false, // Remove exact phrase restriction
+            findAllMatches: true,
+            tokenize: true, // Split search into tokens
+            matchAllTokens: true,
+            distance: 100, // Increased allowed edit distance
+            location: 0,
+            ignoreFieldNorm: true
+          });
 
-        const results = fuse.search(searchTerm);
+        const cleanSearch = searchTerm
+        .replace(/[^a-z0-9\s]/gi, '') // Remove special chars
+        .replace(/\s+/g, ' ') // Collapse multiple spaces
+        .trim();
+
+        const results = fuse.search(cleanSearch);
         if (results.length > 0) {
-          const [bestMatch] = results.sort((a, b) => a.score - b.score);
           const distance = geolib.getDistance(
             { latitude: userLocation.lat, longitude: userLocation.lng },
             { latitude: sm.location.lat, longitude: sm.location.lng }
           ) / 1000;
 
-          const totalCost = bestMatch.item.price + (distance * TRANSPORT_RATE);
+          // Find best match in current supermarket
+          const bestStoreMatch = results.reduce((best, current) => {
+            // Normalize database item name
+            const dbItem = current.item.itemName
+              .toLowerCase()
+              .replace(/[^a-z0-9\s]/gi, '')
+              .replace(/\(.*?\)/g, '') // Remove parentheses content
+              .trim();
 
-          if (!bestOption || totalCost < bestOption.totalCost) {
-            bestOption = {
-              itemName: bestMatch.item.itemName,
-              originalSearch: rawItem,
-              price: bestMatch.item.price,
-              supermarket: sm.name,
-              supermarketAddress: sm.address,
-              distance,
-              transportCost: distance * TRANSPORT_RATE,
-              totalCost
-            };
-          }
+            // Calculate similarity with multiple methods
+            const similarity = Math.max(
+              stringSimilarity.compareTwoStrings(cleanSearch, dbItem),
+              stringSimilarity.compareTwoStrings(
+                cleanSearch.replace(/\s/g, ''), 
+                dbItem.replace(/\s/g, '')
+              )
+            );
+
+            // Weighted scoring favoring similarity
+            const combinedScore = (current.score * 0.4) + ((1 - similarity) * 0.6);
+            
+            return combinedScore < best.combinedScore ? 
+              { ...current, combinedScore } : 
+              best;
+          }, { combinedScore: Infinity });
+
+
+          bestOptions.push({
+            item: bestStoreMatch.item,
+            distance,
+            transportCost: distance * TRANSPORT_RATE,
+            supermarket: sm.name,
+            supermarketAddress: sm.address,
+            combinedScore: bestStoreMatch.combinedScore
+          });
         }
       } catch (err) {
         console.error(`Error processing ${sm.name}:`, err);
       }
     }
 
-    itemMap.push(bestOption || { 
-      originalSearch: rawItem, 
-      error: 'Item not found in nearby stores' 
-    });
+    if (bestOptions.length > 0) {
+      // Sort by similarity first, then total cost
+      bestOptions.sort((a, b) => {
+        if (a.combinedScore !== b.combinedScore) {
+          return a.combinedScore - b.combinedScore;
+        }
+        return (a.item.price + a.transportCost) - (b.item.price + b.transportCost);
+      });
+
+      const bestMatch = bestOptions[0];
+      itemMap.push({
+        originalSearch: rawItem,
+        matchedItem: bestMatch.item.itemName,
+        price: bestMatch.item.price,
+        supermarket: bestMatch.supermarket,
+        distance: bestMatch.distance,
+        transportCost: bestMatch.transportCost
+      });
+    } else {
+      itemMap.push({ 
+        originalSearch: rawItem, 
+        error: 'Item not found in nearby stores' 
+      });
+    }
   }
 
   return itemMap;
 }
 
-// Rest of the file remains same as previous optimizeRoute function
 function optimizeRoute(items, userLocation) {
   const stores = {};
   
@@ -131,7 +185,11 @@ function optimizeRoute(items, userLocation) {
         address: item.supermarketAddress
       };
     }
-    stores[item.supermarket].items.push(item);
+    stores[item.supermarket].items.push({
+        itemName: item.matchedItem,
+        originalSearch: item.originalSearch,
+        price: item.price
+      });
     stores[item.supermarket].totalPrice += item.price;
   });
 
@@ -157,7 +215,7 @@ function optimizeRoute(items, userLocation) {
 }
 
 function calculateTravelTime(distance) {
-  const avgSpeed = 40; // km/h
+  const avgSpeed = 40;
   const timeHours = distance / avgSpeed;
   return `${Math.round(timeHours * 60)} min`;
 }
