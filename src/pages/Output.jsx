@@ -167,9 +167,6 @@ const Output = () => {
           <button className="save-button" onClick={handleSavePlan}>
             SAVE THIS PLAN
           </button>
-          <Link to="/GeneratePlan" className="edit-button">
-            EDIT MY LIST
-          </Link>
         </div>
       </div>
     </div>

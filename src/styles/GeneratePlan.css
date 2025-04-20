@@ -59,6 +59,12 @@
   max-width: 80%; /* Leave space for the remove button */
 }
 
+.input-section {
+ 
+  width: 100%;
+  margin: 20px auto; /* Center horizontally */
+}
+
 .remove-button {
   background: none;
   color: red;

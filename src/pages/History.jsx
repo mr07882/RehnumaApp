@@ -11,6 +11,7 @@ const History = () => {
   const [selectedPlans, setSelectedPlans] = useState([]);
   const [shoppingPlans, setShoppingPlans] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [cutoffItems, setCutoffItems] = useState({}); // State to track cut-off items
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +58,16 @@ const History = () => {
 
   const nextSlide = () => setCurrentSlide(prev => (prev + 1) % expandedPlan.data.itinerary.length);
   const prevSlide = () => setCurrentSlide(prev => (prev - 1 + expandedPlan.data.itinerary.length) % expandedPlan.data.itinerary.length);
+
+  const toggleItemCutoff = (store, itemIndex) => {
+    setCutoffItems((prev) => ({
+      ...prev,
+      [store]: {
+        ...prev[store],
+        [itemIndex]: !prev[store]?.[itemIndex],
+      },
+    }));
+  };
 
   const filteredPlans = shoppingPlans.filter(plan =>
     plan.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -152,7 +163,14 @@ const History = () => {
                           {stop.items.map((item, itemIndex) => (
                             <li key={`${stop.store}-${itemIndex}`} className="item">
                               <span className="item-bullet">➔</span>
-                              <div className="item-details">
+                              <div
+                                className="item-details"
+                                onClick={() => toggleItemCutoff(stop.store, itemIndex)}
+                                style={{
+                                  textDecoration: cutoffItems[stop.store]?.[itemIndex] ? "line-through" : "none",
+                                  cursor: "pointer",
+                                }}
+                              >
                                 <span className="matched-item">{item.itemName}</span>
                                 {item.originalSearch.toLowerCase() !== item.itemName.toLowerCase() && (
                                   <span className="original-search">(Searched for: {item.originalSearch})</span>

@@ -74,9 +74,11 @@ body {
   background: transparent !important; /* Force transparent background */
   min-height: 100vh;
   padding-top: 100px; /* Match header height */
-  width: 100%;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  
+  
 }
 
 /* Remove duplicate .history-container definition */
@@ -85,6 +87,7 @@ body {
   border-radius: 15px;
   padding: 2rem;
   box-shadow: 0 4px 20px rgba(74, 43, 122, 0.15);
+  
 }
 
 /* Add responsive header spacing */
@@ -124,34 +127,16 @@ body {
 
 /* Rest of the existing CSS remains unchanged below this line */
 
-.plan-item {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 6px rgba(74, 43, 122, 0.1);
-  transition: all 0.3s ease;
-}
+
 
 .plan-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(74, 43, 122, 0.15);
 }
 
-.plan-header {
-  padding: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  background: #6c4a9e;
-  border-radius: 15px;
-}
 
-.plan-header h3 {
-  color: white;
-  margin: 0;
-  font-size: 1.4rem;
-}
+
+
 
 .toggle-icon {
   color: white;
@@ -168,6 +153,7 @@ body {
   padding: 2rem;
   max-height: 400px;
   overflow-y: auto;
+  
 }
 
 .store-section {
@@ -326,7 +312,7 @@ body {
   gap: 1rem;
   cursor: pointer;
   background: #6c4a9e;
-  border-radius: 15px;
+  border-radius: 1px;
 }
 
 .plan-header h3 {
@@ -516,13 +502,17 @@ body {
   background: #fff3cd;
   border-radius: 8px;
   margin-top: 1rem;
+  
 }
 
 .unavailable-section h3 {
   color: #856404;
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
+  text-align: center;
 }
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

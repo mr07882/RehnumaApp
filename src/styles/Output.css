@@ -192,7 +192,7 @@
     background-color: #f0e5ff;
   }
   
-  .save-button, .edit-button {
+  .save-button{
     padding: 15px 30px;
     border: none;
     border-radius: 30px;
