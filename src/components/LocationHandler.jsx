@@ -5,20 +5,23 @@ const LocationHandler = async (onLocationSuccess, onError) => {
     const apiKey = '4f87702fb2be40368547d4b6073f9fbe';
     const url = `https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:${longitude},${latitude},7000&bias=proximity:${longitude},${latitude}&limit=200&apiKey=${apiKey}`;
 
-    const exactNames = [
-      "Naheed Super Market",
+    const targetNames = [
+      "Naheed", 
       "Chase up",
       "SPAR",
       "Imtiaz",
-      "Springs Store - Tipu Sultan Road"
+      "Springs"
     ];
 
     try {
       const response = await axios.get(url);
       const supermarkets = response.data.features
         .filter((place) => {
-          const name = place.properties.name || '';
-          return exactNames.includes(name);
+          const placeName = (place.properties.name || '').toLowerCase();
+          return targetNames.some(target => {
+            const targetLower = target.toLowerCase();
+            return placeName.includes(targetLower);
+          });
         })
         .map((place) => ({
           name: place.properties.name,
