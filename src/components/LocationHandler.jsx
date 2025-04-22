@@ -8,8 +8,6 @@ const LocationHandler = async (onLocationSuccess, onError) => {
     const targetNames = [
       "Naheed", 
       "Chase up",
-      "SPAR",
-      "Imtiaz",
       "Springs"
     ];
 
