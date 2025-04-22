@@ -312,3 +312,61 @@
         padding-top: 160px; /* Adjust for stacked mobile navigation */
     }
 }
+
+/* Add to Output.css */
+.item-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.price-difference {
+  font-size: 0.9em;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.price-decrease {
+  color: #28a745;
+  background-color: #e8f9f0;
+}
+
+.price-increase {
+  color: #dc3545;
+  background-color: #fce8e6;
+}
+
+/* Add these styles to your existing Output.css */
+.item-dropdown {
+  color: #4a2b7a; /* Text color for selected value */
+  background-color: white;
+  width: 100%;
+  padding-left: 0%;
+}
+
+.item-dropdown option {
+  color: #4a2b7a !important; /* Text color for dropdown options */
+  background-color: white !important;
+  
+}
+
+.item-dropdown:hover option {
+  background-color: #f8f5ff !important; /* Hover background color */
+}
+
+/* Keep your existing .item-dropdown styles */
+.item-dropdown {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.item-dropdown:focus {
+  border-color: #007bff;
+  outline: none;
+}
+

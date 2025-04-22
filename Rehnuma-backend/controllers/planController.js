@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 
 const TRANSPORT_RATE = 28;
+const ITEM_OPTIONS_LIMIT = 15; // Limit alternatives per item
 const modelCache = new Map();
 
 function sanitizeModelName(name) {
@@ -50,7 +51,7 @@ async function processItems(items, supermarkets, userLocation) {
   
   for (const rawItem of items) {
     const searchTerm = rawItem.trim().toLowerCase();
-    let bestOptions = [];
+    const uniqueOptions = new Map();
 
     for (const sm of supermarkets) {
       try {
@@ -75,25 +76,25 @@ async function processItems(items, supermarkets, userLocation) {
 
         const items = await Model.find({});
         const fuse = new Fuse(items, {
-            keys: ['itemName'],
-            threshold: 0.5, // Increased threshold for more flexibility
-            includeScore: true,
-            ignoreLocation: true,
-            minMatchCharLength: 2, // Allow shorter matches
-            shouldSort: true,
-            useExtendedSearch: false, // Remove exact phrase restriction
-            findAllMatches: true,
-            tokenize: true, // Split search into tokens
-            matchAllTokens: true,
-            distance: 100, // Increased allowed edit distance
-            location: 0,
-            ignoreFieldNorm: true
-          });
+          keys: ['itemName'],
+          threshold: 0.5,
+          includeScore: true,
+          ignoreLocation: true,
+          minMatchCharLength: 2,
+          shouldSort: true,
+          useExtendedSearch: false,
+          findAllMatches: true,
+          tokenize: true,
+          matchAllTokens: true,
+          distance: 100,
+          location: 0,
+          ignoreFieldNorm: true
+        });
 
         const cleanSearch = searchTerm
-        .replace(/[^a-z0-9\s]/gi, '') // Remove special chars
-        .replace(/\s+/g, ' ') // Collapse multiple spaces
-        .trim();
+          .replace(/[^a-z0-9\s]/gi, '')
+          .replace(/\s+/g, ' ')
+          .trim();
 
         const results = fuse.search(cleanSearch);
         if (results.length > 0) {
@@ -102,16 +103,13 @@ async function processItems(items, supermarkets, userLocation) {
             { latitude: sm.location.lat, longitude: sm.location.lng }
           ) / 1000;
 
-          // Find best match in current supermarket
-          const bestStoreMatch = results.reduce((best, current) => {
-            // Normalize database item name
-            const dbItem = current.item.itemName
+          results.forEach(result => {
+            const dbItem = result.item.itemName
               .toLowerCase()
               .replace(/[^a-z0-9\s]/gi, '')
-              .replace(/\(.*?\)/g, '') // Remove parentheses content
+              .replace(/\(.*?\)/g, '')
               .trim();
 
-            // Calculate similarity with multiple methods
             const similarity = Math.max(
               stringSimilarity.compareTwoStrings(cleanSearch, dbItem),
               stringSimilarity.compareTwoStrings(
@@ -120,22 +118,19 @@ async function processItems(items, supermarkets, userLocation) {
               )
             );
 
-            // Weighted scoring favoring similarity
-            const combinedScore = (current.score * 0.4) + ((1 - similarity) * 0.6);
-            
-            return combinedScore < best.combinedScore ? 
-              { ...current, combinedScore } : 
-              best;
-          }, { combinedScore: Infinity });
-
-
-          bestOptions.push({
-            item: bestStoreMatch.item,
-            distance,
-            transportCost: distance * TRANSPORT_RATE,
-            supermarket: sm.name,
-            supermarketAddress: sm.address,
-            combinedScore: bestStoreMatch.combinedScore
+            // Unique key with supermarket name
+            const optionKey = `${result.item.itemName.toLowerCase()}_${result.item.price}_${sm.name}`;
+            if (!uniqueOptions.has(optionKey)) {
+              uniqueOptions.set(optionKey, {
+                item: result.item,
+                distance,
+                transportCost: distance * TRANSPORT_RATE,
+                supermarket: sm.name,
+                supermarketAddress: sm.address,
+                similarity,
+                combinedScore: (result.score * 0.4) + ((1 - similarity) * 0.6)
+              });
+            }
           });
         }
       } catch (err) {
@@ -143,23 +138,28 @@ async function processItems(items, supermarkets, userLocation) {
       }
     }
 
-    if (bestOptions.length > 0) {
-      // Sort by similarity first, then total cost
-      bestOptions.sort((a, b) => {
-        if (a.combinedScore !== b.combinedScore) {
-          return a.combinedScore - b.combinedScore;
-        }
-        return (a.item.price + a.transportCost) - (b.item.price + b.transportCost);
-      });
+    if (uniqueOptions.size > 0) {
+      const sortedOptions = Array.from(uniqueOptions.values())
+        .sort((a, b) => a.combinedScore - b.combinedScore)
+        .slice(0, ITEM_OPTIONS_LIMIT);
 
-      const bestMatch = bestOptions[0];
+      const bestMatch = sortedOptions[0];
+      
       itemMap.push({
         originalSearch: rawItem,
         matchedItem: bestMatch.item.itemName,
         price: bestMatch.item.price,
         supermarket: bestMatch.supermarket,
         distance: bestMatch.distance,
-        transportCost: bestMatch.transportCost
+        transportCost: bestMatch.transportCost,
+        options: sortedOptions.map(opt => ({
+          itemName: opt.item.itemName,
+          price: opt.item.price,
+          supermarket: opt.supermarket,
+          address: opt.supermarketAddress,
+          transportCost: opt.transportCost,
+          distance: opt.distance
+        }))
       });
     } else {
       itemMap.push({ 
@@ -171,6 +171,7 @@ async function processItems(items, supermarkets, userLocation) {
 
   return itemMap;
 }
+
 
 function optimizeRoute(items, userLocation) {
   const stores = {};
@@ -186,12 +187,19 @@ function optimizeRoute(items, userLocation) {
       };
     }
     stores[item.supermarket].items.push({
-        itemName: item.matchedItem,
-        originalSearch: item.originalSearch,
-        price: item.price
-      });
+      itemName: item.matchedItem,
+      originalSearch: item.originalSearch,
+      price: item.price,
+      options: item.options.map(opt => ({
+        ...opt,
+        // Add unique identifier for each option
+        uid: `${opt.itemName}_${opt.price}_${opt.supermarket}`
+      }))
+    });
+    
     stores[item.supermarket].totalPrice += item.price;
   });
+  
 
   const sortedStores = Object.entries(stores)
     .sort((a, b) => a[1].distance - b[1].distance);
