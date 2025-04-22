@@ -6,7 +6,7 @@ const LocationHandler = async (onLocationSuccess, onError) => {
     const apiKey = '4f87702fb2be40368547d4b6073f9fbe';
     const targetNames = ["Naheed", "Chase up", "Springs" ];
     const MAX_LIMIT = 100; // Geoapify's max allowed per request
-    const RADIUS = 5000;
+    const RADIUS = 7000;
     let allSupermarkets = [];
     let offset = 0;
     let hasMore = true;
