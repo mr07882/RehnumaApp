@@ -4,7 +4,7 @@ import * as stringSimilarity from 'string-similarity';
 const LocationHandler = async (onLocationSuccess, onError) => {
   const fetchNearbySupermarkets = async (latitude, longitude) => {
     const apiKey = '4f87702fb2be40368547d4b6073f9fbe';
-    const targetNames = ["Naheed", "Chase up", "Springs" , "SPAR"];
+    const targetNames = ["Naheed", "Chase up", "Springs" ];
     const MAX_LIMIT = 100; // Geoapify's max allowed per request
     const RADIUS = 5000;
     let allSupermarkets = [];
