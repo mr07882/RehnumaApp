@@ -192,7 +192,6 @@ function optimizeRoute(items, userLocation) {
       price: item.price,
       options: item.options.map(opt => ({
         ...opt,
-        // Add unique identifier for each option
         uid: `${opt.itemName}_${opt.price}_${opt.supermarket}`
       }))
     });
